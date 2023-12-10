@@ -15,3 +15,16 @@ body {
   color: #000000cc;
   background: #444444
 }
+
+@layer components {
+  iframe {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: fit-content;
+    max-height: fit-content;
+    @media (min-width: 640px) {
+      max-width: none;
+      max-height:none;
+     }
+  }
+ }

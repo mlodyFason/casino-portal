@@ -1,49 +1,32 @@
 import React, { FC, useState } from 'react';
 import { Grid, GridColumn } from 'semantic-ui-react';
 import { useAuth } from '../auth/AuthContextProvider';
+import { loginUser } from '../api/loginUser';
 
-interface LoginScreenProps {}
-
-interface FormData {
+export interface LoginFormData {
   username: string;
   password: string;
 }
 
-export const LoginScreen: FC<LoginScreenProps> = ({}) => {
+export const LoginScreen: FC = ({}) => {
   const auth = useAuth();
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<LoginFormData>({
     username: '',
     password: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.currentTarget;
     setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/login`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        },
-      );
-
-      if (response.ok) {
-        const userData = await response.json();
-        auth.login(userData);
-      } else {
-        console.error('Nieudane logowanie');
-      }
-    } catch (error) {
-      console.error('Wystąpił błąd podczas logowania', error);
+      const userData = await loginUser(formData);
+      auth.login(userData);
+    } catch (error: unknown) {
+      console.error(error);
     }
   };
   return (

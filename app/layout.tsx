@@ -18,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-[#444444]`}>
+    <html lang="en" className="w-[100vh] md:w-auto">
+      <body className={`${inter.className} bg-[#444444] m-6`}>
         <nav className="flex justify-center mb-8">
           <Image src={'logo.svg'} width={700} height={135} alt="logo" />
         </nav>
