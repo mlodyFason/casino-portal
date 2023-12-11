@@ -7,7 +7,15 @@ type CategoryItem = {
   name: string;
 };
 
-export const Categories: FC = () => {
+interface CategoriesProps {
+  onClick: (categoryId: number) => void;
+  selectedCategories: number[];
+}
+
+export const Categories: FC<CategoriesProps> = ({
+  onClick,
+  selectedCategories,
+}) => {
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -15,8 +23,8 @@ export const Categories: FC = () => {
     const fetchCategories = async () => {
       try {
         setIsLoading(true);
-        const data = await getCategories();
-        setCategories(data);
+        const categories: CategoryItem[] = await getCategories();
+        setCategories(categories);
       } catch (error) {
         console.log(error);
       } finally {
@@ -38,7 +46,13 @@ export const Categories: FC = () => {
       ) : (
         <List selection animated>
           {categories.map(category => (
-            <ListItem key={category.id}>{category.name}</ListItem>
+            <ListItem
+              key={category.id}
+              onClick={() => onClick(category.id)}
+              active={selectedCategories.includes(category.id)}
+            >
+              {category.name}
+            </ListItem>
           ))}
         </List>
       )}
