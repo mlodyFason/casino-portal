@@ -1,5 +1,14 @@
+import { addHeaders, fetchData } from './fetcher';
+
 export const getGames = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/games`);
-  const data = await response.json();
-  return data;
+  try {
+    const data = await fetchData('games', {
+      method: 'GET',
+      headers: addHeaders(),
+    });
+    return data;
+  } catch (error) {
+    console.error('Error while fetching games', error);
+    throw error;
+  }
 };

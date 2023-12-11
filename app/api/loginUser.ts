@@ -1,23 +1,18 @@
 import { LoginFormData } from '../components/LoginScreen';
+import { addHeaders, fetchData } from './fetcher';
+
 export const loginUser = async (formData: LoginFormData) => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API_URL}/login`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      },
-    );
+    const data = await fetchData('login', {
+      method: 'POST',
+      headers: addHeaders(),
+      body: JSON.stringify(formData),
+    });
 
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw new Error('Login failed');
-    }
+    return data;
   } catch (error) {
-    throw new Error('Error occurred while logging in');
+    console.error('Error during login', error);
+    alert('Invalid username or password');
+    throw error;
   }
 };
