@@ -30,7 +30,7 @@ export const LoginScreen: FC = ({}) => {
     }
   };
   return (
-    <Grid centered columns={4} doubling>
+    <Grid centered columns={4} doubling className="bg-white">
       <GridColumn as={'section'}>
         <form className="ui form" method="post" onSubmit={handleSubmit}>
           <fieldset>

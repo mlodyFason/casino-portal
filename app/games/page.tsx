@@ -86,7 +86,7 @@ export default function GamesPage() {
   if (!auth.player) return;
 
   return (
-    <Grid>
+    <Grid className="bg-white">
       <PlayerMenu />
       <Search onSearchChange={debouncedHandleSearchChange} />
       <GridColumn width={12}>
