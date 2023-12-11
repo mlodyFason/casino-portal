@@ -8,6 +8,9 @@ Node v18.17.0
 To run the development server:
 
 ```bash
+You should have a file .env.local with the same variables as in .env.example in your root folder
+This file should be already in your project - intentionally for assignment test goals
+
 In the root folder run:
 npm install
 npm run dev
