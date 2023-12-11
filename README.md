@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
+# Casino Portal
+App created as assignment Javascript test.
 ## Getting Started
-
-First, run the development server:
+### Requirements
+```bash 
+Node v18.17.0
+```
+To run the development server:
 
 ```bash
+In the root folder run:
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run server (in separate terminal - it will run the API mock)
+# if you use yarn / pnpm / bun - adjust command executions
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Login credentials:
+```bash
+username: rebecka
+password: secret
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+username: eric
+password: dad
 
-## Learn More
+username: stoffe
+password: rock
+```
 
-To learn more about Next.js, take a look at the following resources:
+To run production server:
+```bash
+npm run build
+npm run start
+``` 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Screenshots
+<img width="1111" alt="image" src="https://github.com/mlodyFason/casino-portal/assets/153199383/bc14f37a-7242-42ed-9daa-dea3645ad4d6">
+<img width="468" alt="image" src="https://github.com/mlodyFason/casino-portal/assets/153199383/c2533668-0e9b-4168-9c0d-28c9910fdfe7">
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Bundle size and routes
 
-## Deploy on Vercel
+<img width="476" alt="image" src="https://github.com/mlodyFason/casino-portal/assets/153199383/d9c12e93-c5d7-4158-a22f-a599dffe7586">
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Lighthouse score
+Lighthouse score should only be measured in production mode as subsequent builds are created using a different approach (development server vs production server).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<img width="725" alt="image" src="https://github.com/mlodyFason/casino-portal/assets/153199383/09440351-a2fc-4081-a123-868240cab1fa">
+
+
+### Possible improvement changes
+Ideas to enchance the current app:
+- implement next-auth for authentication
+- implement kind of react-toastify to improve UX
+- implement internationalization
+- implement unit tests
+
+
