@@ -8,6 +8,7 @@ import { Categories } from '../components/Categories';
 import { getGames } from '../api/getGames';
 import { useDebouncedCallback } from 'use-debounce';
 import { GameCard } from '../components/GameCard';
+import { useRouter } from 'next/navigation';
 
 const DEBOUNCE_TIME = 500;
 
@@ -21,7 +22,8 @@ export type CasinoGame = {
 
 export default function GamesPage() {
   const auth = useAuth();
-  const { player } = auth;
+
+  const router = useRouter();
 
   const [games, setGames] = useState<CasinoGame[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +47,12 @@ export default function GamesPage() {
 
     fetchGamesData();
   }, []);
+
+  useEffect(() => {
+    if (!auth.player) {
+      router.push('/');
+    }
+  }, [auth.player, router]);
 
   const debouncedHandleSearchChange = useDebouncedCallback((value: string) => {
     setSearchTerm(value);
@@ -75,14 +83,11 @@ export default function GamesPage() {
     );
   });
 
+  if (!auth.player) return;
+
   return (
     <Grid>
-      <PlayerMenu
-        avatar={player?.avatar || ''}
-        name={player?.name || ''}
-        event={player?.event || ''}
-        logout={auth.logout}
-      />
+      <PlayerMenu />
       <Search onSearchChange={debouncedHandleSearchChange} />
       <GridColumn width={12}>
         <Header as="h3" dividing>
@@ -91,14 +96,11 @@ export default function GamesPage() {
         {isLoading ? (
           <Loader active inline="centered" />
         ) : (
-          <>
-            <script src="lib/comeon.game-1.1.min.js" defer />
-            <div className="ui relaxed divided game items links">
-              {filteredGames.map(game => (
-                <GameCard {...game} />
-              ))}
-            </div>
-          </>
+          <section>
+            {filteredGames.map(game => (
+              <GameCard {...game} key={game.code} />
+            ))}
+          </section>
         )}
       </GridColumn>
       <Categories

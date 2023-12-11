@@ -61,7 +61,11 @@ export const LoginScreen: FC = ({}) => {
               </div>
               <div className="field">
                 <div className="ui icon input">
-                  <input type="submit" value="Login" />
+                  <input
+                    type="submit"
+                    value="Login"
+                    className="cursor-pointer"
+                  />
                   <i className="right chevron icon"></i>
                 </div>
               </div>

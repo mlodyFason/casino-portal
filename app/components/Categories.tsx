@@ -8,7 +8,7 @@ type CategoryItem = {
 };
 
 interface CategoriesProps {
-  onClick: (categoryId: number) => void;
+  onClick: (categoryId: CategoryItem['id']) => void;
   selectedCategories: number[];
 }
 

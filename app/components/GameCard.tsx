@@ -31,23 +31,21 @@ export const GameCard: FC<GameCardProps> = ({
           className="flex-[1_1_100%] min-w-[230px] md:m-4"
         />
         <ItemContent>
-          <Header>{name}</Header>
+          <Header as="h3">{name}</Header>
           <CardDescription className="mb-4">{description}</CardDescription>
-          <div>
-            <Link href={`/games/${code}`}>
-              <Button
-                className="play"
-                floated="right"
-                secondary={true}
-                inverted={true}
-                type="button"
-                onClick={() => {}}
-              >
-                Play
-                <Icon name="chevron right" />
-              </Button>
-            </Link>
-          </div>
+          <Link href={`/games/${code}`}>
+            <Button
+              className="play"
+              floated="right"
+              secondary={true}
+              inverted={true}
+              type="button"
+              onClick={() => {}}
+            >
+              Play
+              <Icon name="chevron right" />
+            </Button>
+          </Link>
         </ItemContent>
       </Item>
       <Divider />
