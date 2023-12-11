@@ -45,7 +45,7 @@ export default function InGame() {
   if (!auth.player) return;
 
   return (
-    <Grid centered>
+    <Grid centered className="bg-white">
       <GridRow>
         <GridColumn width="15" textAlign="center">
           <Link href="/games">

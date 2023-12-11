@@ -26,9 +26,9 @@ export default function RootLayout({
           <nav className="flex justify-center mb-8">
             <Image src={'logo.svg'} width={700} height={135} alt="logo" />
           </nav>
-          <div className="bg-white mx-auto px-4 main container">
+          <section className="mx-auto px-4 main container">
             <AuthProvider>{children}</AuthProvider>
-          </div>
+          </section>
         </body>
       </html>
     </>
