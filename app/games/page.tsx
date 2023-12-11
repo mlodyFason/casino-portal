@@ -1,28 +1,17 @@
 'use client';
 import { useAuth } from '../auth/AuthContextProvider';
-import {
-  Card,
-  Grid,
-  Header,
-  Image,
-  Loader,
-  GridColumn,
-  Item,
-  Button,
-  Icon,
-  ItemImage,
-  ItemContent,
-  CardDescription,
-  Divider,
-} from 'semantic-ui-react';
+import { Grid, Header, Loader, GridColumn } from 'semantic-ui-react';
 import { Search } from '../components/Search';
 import { PlayerMenu } from '../components/PlayerMenu';
 import { useState, useEffect } from 'react';
 import { Categories } from '../components/Categories';
-import Link from 'next/link';
 import { getGames } from '../api/getGames';
+import { useDebouncedCallback } from 'use-debounce';
+import { GameCard } from '../components/GameCard';
 
-type CasinoGame = {
+const DEBOUNCE_TIME = 500;
+
+export type CasinoGame = {
   name: string;
   description: string;
   code: string;
@@ -37,12 +26,15 @@ export default function GamesPage() {
   const [games, setGames] = useState<CasinoGame[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+
   useEffect(() => {
     const fetchGamesData = async () => {
       setIsLoading(true);
 
       try {
-        const gamesData = await getGames();
+        const gamesData: CasinoGame[] = await getGames();
         setGames(gamesData);
       } catch (error: unknown) {
         console.error(error);
@@ -54,7 +46,34 @@ export default function GamesPage() {
     fetchGamesData();
   }, []);
 
-  const handlePlay = () => {};
+  const debouncedHandleSearchChange = useDebouncedCallback((value: string) => {
+    setSearchTerm(value);
+  }, DEBOUNCE_TIME);
+
+  const handleCategoryClick = (categoryId: number) => {
+    setSelectedCategories(prevCategories => {
+      if (prevCategories.includes(categoryId)) {
+        return prevCategories.filter(id => id !== categoryId);
+      } else {
+        return [...prevCategories, categoryId];
+      }
+    });
+  };
+
+  const filteredGames = games.filter(game => {
+    const matchesSearch = game.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    if (selectedCategories.length === 0) {
+      return matchesSearch;
+    }
+
+    return (
+      matchesSearch &&
+      game.categoryIds.some(id => selectedCategories.includes(id))
+    );
+  });
 
   return (
     <Grid>
@@ -64,8 +83,7 @@ export default function GamesPage() {
         event={player?.event || ''}
         logout={auth.logout}
       />
-      <Search />
-
+      <Search onSearchChange={debouncedHandleSearchChange} />
       <GridColumn width={12}>
         <Header as="h3" dividing>
           Games
@@ -76,46 +94,17 @@ export default function GamesPage() {
           <>
             <script src="lib/comeon.game-1.1.min.js" defer />
             <div className="ui relaxed divided game items links">
-              {games.map(game => (
-                <Card fluid className="!shadow-none">
-                  <Item className="flex p-4 flex-wrap md:flex-nowrap game-launch">
-                    <ItemImage
-                      src={game.icon}
-                      alt="game-icon"
-                      size="medium"
-                      className="flex-[1_1_100%] min-w-[230px] md:m-4"
-                    />
-                    <ItemContent>
-                      <Header>{game.name}</Header>
-                      <CardDescription className="mb-4">
-                        {game.description}
-                      </CardDescription>
-                      <div>
-                        <Link href={`/games/${game.code}`}>
-                          <Button
-                            className="play"
-                            floated="right"
-                            secondary={true}
-                            inverted={true}
-                            type="button"
-                            onClick={handlePlay}
-                          >
-                            Play
-                            <Icon name="chevron right" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </ItemContent>
-                  </Item>
-                  <Divider />
-                </Card>
+              {filteredGames.map(game => (
+                <GameCard {...game} />
               ))}
             </div>
           </>
         )}
       </GridColumn>
-
-      <Categories />
+      <Categories
+        onClick={handleCategoryClick}
+        selectedCategories={selectedCategories}
+      />
     </Grid>
   );
 }
