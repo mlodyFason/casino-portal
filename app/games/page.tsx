@@ -83,7 +83,7 @@ export default function GamesPage() {
     );
   });
 
-  if (!auth.player) return;
+  if (!auth.player) return null;
 
   return (
     <Grid className="bg-white">

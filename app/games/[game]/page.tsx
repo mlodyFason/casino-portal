@@ -20,8 +20,8 @@ export default function InGame() {
         typeof window.comeon.game.launch === 'function'
       ) {
         game && window.comeon.game.launch(game.toString());
-      } else {
-        throw new Error('Launch error');
+      } else if (!auth.player) {
+        router.push('/');
       }
     };
 
@@ -36,13 +36,7 @@ export default function InGame() {
     };
   }, [game]);
 
-  useEffect(() => {
-    if (!auth.player) {
-      router.push('/');
-    }
-  }, [auth.player, router]);
-
-  if (!auth.player) return;
+  if (!auth.player) return null;
 
   return (
     <Grid centered className="bg-white">
